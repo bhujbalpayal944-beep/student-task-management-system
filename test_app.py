@@ -1,0 +1,66 @@
+from app import app, tasks
+
+
+def test_home_page():
+    client = app.test_client()
+
+    response = client.get("/")
+
+    assert response.status_code == 200
+
+
+def test_health():
+    client = app.test_client()
+
+    response = client.get("/health")
+
+    assert response.status_code == 200
+    assert response.get_json() == {"status": "ok"}
+
+
+def test_add_task():
+    client = app.test_client()
+
+    response = client.post(
+        "/add-task",
+        data={
+            "task": "Test Assignment",
+            "subject": "Testing",
+            "deadline": "2026-10-01",
+            "priority": "High"
+        }
+    )
+
+    assert response.status_code == 302
+    assert tasks[-1]["task"] == "Test Assignment"
+
+
+def test_tasks_api():
+    client = app.test_client()
+
+    response = client.get("/api/tasks")
+
+    assert response.status_code == 200
+    assert isinstance(response.get_json(), list)
+
+
+def test_complete_task():
+    client = app.test_client()
+
+    tasks.append(
+        {
+            "id": 999,
+            "task": "Completion Test",
+            "subject": "Testing",
+            "deadline": "2026-10-05",
+            "priority": "Medium",
+            "status": "Pending"
+        }
+    )
+
+    response = client.post("/complete-task/999")
+
+    assert response.status_code == 302
+    assert tasks[-1]["status"] == "Completed"
+
+    tasks.pop()

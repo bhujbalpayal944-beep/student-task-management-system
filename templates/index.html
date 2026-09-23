@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Task Management System</title>
+</head>
+
+<body>
+
+    <h1>Student Task Management System</h1>
+
+    <h2>Add New Task</h2>
+
+    <form action="/add-task" method="POST">
+
+        <label>Task Name:</label>
+        <input type="text" name="task" required>
+
+        <br><br>
+
+        <label>Subject:</label>
+        <input type="text" name="subject" required>
+
+        <br><br>
+
+        <label>Deadline:</label>
+        <input type="date" name="deadline" required>
+
+        <br><br>
+
+        <label>Priority:</label>
+
+        <select name="priority" required>
+            <option value="">Select Priority</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+        </select>
+
+        <br><br>
+
+        <button type="submit">Add Task</button>
+
+    </form>
+
+    <hr>
+
+    <h2>Your Tasks</h2>
+
+    {% for task in tasks %}
+
+        <div>
+            <h3>{{ task.task }}</h3>
+
+            <p>Subject: {{ task.subject }}</p>
+
+            <p>Deadline: {{ task.deadline }}</p>
+
+            <p>Priority: {{ task.priority }}</p>
+
+            <p>Status: {{ task.status }}</p>
+
+            {% if task.status == "Pending" %}
+                <form action="/complete-task/{{ task.id }}" method="POST">
+                    <button type="submit">Mark Completed</button>
+                </form>
+            {% endif %}
+
+        </div>
+
+        <hr>
+
+    {% endfor %}
+
+</body>
+</html>
