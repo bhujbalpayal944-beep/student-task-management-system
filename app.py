@@ -28,13 +28,13 @@ def add_task():
     deadline = request.form.get("deadline", "")
     priority = request.form.get("priority", "")
 
-    # Remove extra spaces from task name and subject
+    # Remove extra spaces from input
     task_name = task_name.strip()
     subject = subject.strip()
     deadline = deadline.strip()
     priority = priority.strip()
 
-    # Check whether required fields are empty
+    # Validate required fields
     if not task_name:
         return "Task name cannot be empty or contain only spaces.", 400
 
@@ -47,7 +47,7 @@ def add_task():
     if not priority:
         return "Priority is required.", 400
 
-    # Check whether priority is valid
+    # Validate priority
     valid_priorities = ["High", "Medium", "Low"]
 
     if priority not in valid_priorities:
@@ -89,7 +89,10 @@ def delete_task(task_id):
 
 @app.route("/api/tasks")
 def api_tasks():
-    return jsonify(tasks)
+    return jsonify({
+        "total_tasks": len(tasks),
+        "tasks": tasks
+    })
 
 
 @app.route("/health")
@@ -99,4 +102,3 @@ def health():
 
 if __name__ == "__main__":
     app.run(debug=True)
-

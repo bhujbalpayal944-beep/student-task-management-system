@@ -1,3 +1,4 @@
+
 from app import app, tasks
 
 
@@ -41,7 +42,14 @@ def test_tasks_api():
     response = client.get("/api/tasks")
 
     assert response.status_code == 200
-    assert isinstance(response.get_json(), list)
+
+    data = response.get_json()
+
+    assert isinstance(data, dict)
+    assert "total_tasks" in data
+    assert "tasks" in data
+    assert data["total_tasks"] == len(data["tasks"])
+    assert isinstance(data["tasks"], list)
 
 
 def test_complete_task():
@@ -64,3 +72,4 @@ def test_complete_task():
     assert tasks[-1]["status"] == "Completed"
 
     tasks.pop()
+
