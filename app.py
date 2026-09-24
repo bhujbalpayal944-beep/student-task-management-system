@@ -19,6 +19,7 @@ tasks = [
 def home():
     filter_status = request.args.get("status", "All")
     search_query = request.args.get("search", "").strip().lower()
+    sort_order = request.args.get("sort", "none")
 
     if filter_status == "Pending":
         filtered_tasks = [
@@ -33,7 +34,7 @@ def home():
             task for task in tasks if task["priority"] == "High"
         ]
     else:
-        filtered_tasks = tasks
+        filtered_tasks = tasks.copy()
 
     # Search tasks by task name or subject
     if search_query:
@@ -42,6 +43,15 @@ def home():
             if search_query in task["task"].lower()
             or search_query in task["subject"].lower()
         ]
+
+    # Sort tasks by deadline
+    if sort_order == "earliest":
+        filtered_tasks.sort(key=lambda task: task["deadline"])
+    elif sort_order == "latest":
+        filtered_tasks.sort(
+            key=lambda task: task["deadline"],
+            reverse=True
+        )
 
     total_tasks = len(tasks)
 
@@ -62,6 +72,7 @@ def home():
         tasks=filtered_tasks,
         current_filter=filter_status,
         search_query=search_query,
+        sort_order=sort_order,
         total_tasks=total_tasks,
         completed_tasks=completed_tasks,
         pending_tasks=pending_tasks,

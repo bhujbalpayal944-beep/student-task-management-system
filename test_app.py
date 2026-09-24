@@ -132,4 +132,46 @@ def test_task_search():
     assert b"Search Database Assignment" in response.data
 
     tasks.pop()
-    
+
+
+def test_task_sorting():
+    client = app.test_client()
+
+    tasks.append(
+        {
+            "id": 1002,
+            "task": "Later Assignment",
+            "subject": "Testing",
+            "deadline": "2026-12-20",
+            "priority": "Low",
+            "status": "Pending"
+        }
+    )
+
+    tasks.append(
+        {
+            "id": 1003,
+            "task": "Earlier Assignment",
+            "subject": "Testing",
+            "deadline": "2026-10-20",
+            "priority": "High",
+            "status": "Pending"
+        }
+    )
+
+    response = client.get("/?sort=earliest")
+
+    assert response.status_code == 200
+
+    earlier_position = response.data.find(
+        b"Earlier Assignment"
+    )
+
+    later_position = response.data.find(
+        b"Later Assignment"
+    )
+
+    assert earlier_position < later_position
+
+    tasks.pop()
+    tasks.pop()

@@ -192,3 +192,19 @@ button {
 .search-section button {
     width: 100%;
 }
+/* Task Sorting */
+
+.sort-section {
+    background: white;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+}
+
+.sort-section h2 {
+    margin-top: 0;
+}
+
+.sort-section select {
+    margin-top: 5px;
+}

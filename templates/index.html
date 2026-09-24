@@ -128,7 +128,9 @@
 
             <form action="/" method="GET">
 
-                <label for="search">Search by Task Name or Subject</label>
+                <label for="search">
+                    Search by Task Name or Subject
+                </label>
 
                 <input
                     type="text"
@@ -142,6 +144,12 @@
                     type="hidden"
                     name="status"
                     value="{{ current_filter }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="sort"
+                    value="{{ sort_order }}"
                 >
 
                 <button type="submit">
@@ -160,7 +168,9 @@
 
             <form action="/" method="GET">
 
-                <label for="status">Show Tasks</label>
+                <label for="status">
+                    Show Tasks
+                </label>
 
                 <select
                     id="status"
@@ -197,6 +207,69 @@
                     </option>
 
                 </select>
+
+                <input
+                    type="hidden"
+                    name="search"
+                    value="{{ search_query }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="sort"
+                    value="{{ sort_order }}"
+                >
+
+            </form>
+
+        </section>
+
+
+        <!-- Task Sorting -->
+        <section class="sort-section">
+
+            <h2>Sort Tasks</h2>
+
+            <form action="/" method="GET">
+
+                <label for="sort">
+                    Sort by Deadline
+                </label>
+
+                <select
+                    id="sort"
+                    name="sort"
+                    onchange="this.form.submit()"
+                >
+
+                    <option
+                        value="none"
+                        {% if sort_order == "none" %}selected{% endif %}
+                    >
+                        Default Order
+                    </option>
+
+                    <option
+                        value="earliest"
+                        {% if sort_order == "earliest" %}selected{% endif %}
+                    >
+                        Earliest Deadline First
+                    </option>
+
+                    <option
+                        value="latest"
+                        {% if sort_order == "latest" %}selected{% endif %}
+                    >
+                        Latest Deadline First
+                    </option>
+
+                </select>
+
+                <input
+                    type="hidden"
+                    name="status"
+                    value="{{ current_filter }}"
+                >
 
                 <input
                     type="hidden"
