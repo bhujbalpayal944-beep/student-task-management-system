@@ -235,3 +235,12 @@ def test_priority_sorting():
     tasks.pop()
     tasks.pop()
     tasks.pop()
+
+
+def test_commit_footer():
+    client = app.test_client()
+
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert b"Running commit: local" in response.data

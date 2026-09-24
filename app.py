@@ -1,6 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+import os
+
+from flask import Flask, render_template, request, redirect
+from flask import url_for, jsonify
+
 
 app = Flask(__name__)
+
 
 # Temporary task storage
 tasks = [
@@ -79,6 +84,13 @@ def home():
         1 for task in tasks if task["priority"] == "High"
     )
 
+    # Get the commit ID supplied by Render.
+    # Show "local" when running on the local computer.
+    commit_id = os.getenv("RENDER_GIT_COMMIT", "local")
+
+    # Display only the first 7 characters of the commit ID.
+    commit_id = commit_id[:7]
+
     return render_template(
         "index.html",
         tasks=filtered_tasks,
@@ -88,7 +100,8 @@ def home():
         total_tasks=total_tasks,
         completed_tasks=completed_tasks,
         pending_tasks=pending_tasks,
-        high_priority_tasks=high_priority_tasks
+        high_priority_tasks=high_priority_tasks,
+        commit_id=commit_id
     )
 
 

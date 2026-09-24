@@ -208,3 +208,12 @@ button {
 .sort-section select {
     margin-top: 5px;
 }
+/* Commit ID Footer */
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    padding: 15px;
+    color: #666;
+    font-size: 14px;
+}
