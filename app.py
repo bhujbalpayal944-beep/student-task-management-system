@@ -54,6 +54,16 @@ def complete_task(task_id):
     return redirect(url_for("home"))
 
 
+@app.route("/delete-task/<int:task_id>", methods=["POST"])
+def delete_task(task_id):
+    for task in tasks:
+        if task["id"] == task_id:
+            tasks.remove(task)
+            break
+
+    return redirect(url_for("home"))
+
+
 @app.route("/api/tasks")
 def api_tasks():
     return jsonify(tasks)
@@ -66,3 +76,4 @@ def health():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
