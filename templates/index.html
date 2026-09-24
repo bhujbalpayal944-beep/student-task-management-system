@@ -1,75 +1,116 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Student Task Management System</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
 
-    <h1>Student Task Management System</h1>
+    <div class="container">
 
-    <h2>Add New Task</h2>
+        <header>
+            <h1>Student Task Management System</h1>
+            <p>Manage your academic tasks, deadlines and priorities.</p>
+        </header>
 
-    <form action="/add-task" method="POST">
+        <section class="task-form">
 
-        <label>Task Name:</label>
-        <input type="text" name="task" required>
+            <h2>Add New Task</h2>
 
-        <br><br>
+            <form action="/add-task" method="POST">
 
-        <label>Subject:</label>
-        <input type="text" name="subject" required>
+                <label for="task">Task Name</label>
+                <input
+                    type="text"
+                    id="task"
+                    name="task"
+                    placeholder="Enter task name"
+                    required
+                >
 
-        <br><br>
+                <label for="subject">Subject</label>
+                <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    placeholder="Enter subject"
+                    required
+                >
 
-        <label>Deadline:</label>
-        <input type="date" name="deadline" required>
+                <label for="deadline">Deadline</label>
+                <input
+                    type="date"
+                    id="deadline"
+                    name="deadline"
+                    required
+                >
 
-        <br><br>
+                <label for="priority">Priority</label>
+                <select id="priority" name="priority" required>
+                    <option value="">Select Priority</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
 
-        <label>Priority:</label>
+                <button type="submit">Add Task</button>
 
-        <select name="priority" required>
-            <option value="">Select Priority</option>
-            <option value="High">High</option>
-            <option value="Medium">Medium</option>
-            <option value="Low">Low</option>
-        </select>
+            </form>
 
-        <br><br>
+        </section>
 
-        <button type="submit">Add Task</button>
+        <section class="tasks-section">
 
-    </form>
+            <h2>Your Tasks</h2>
 
-    <hr>
+            {% for task in tasks %}
 
-    <h2>Your Tasks</h2>
+            <div class="task-card">
 
-    {% for task in tasks %}
+                <div class="task-header">
+                    <h3>{{ task.task }}</h3>
 
-        <div>
-            <h3>{{ task.task }}</h3>
+                    <span class="priority {{ task.priority|lower }}">
+                        {{ task.priority }}
+                    </span>
+                </div>
 
-            <p>Subject: {{ task.subject }}</p>
+                <p><strong>Subject:</strong> {{ task.subject }}</p>
 
-            <p>Deadline: {{ task.deadline }}</p>
+                <p><strong>Deadline:</strong> {{ task.deadline }}</p>
 
-            <p>Priority: {{ task.priority }}</p>
+                <p>
+                    <strong>Status:</strong>
 
-            <p>Status: {{ task.status }}</p>
+                    {% if task.status == "Completed" %}
+                        <span class="completed">Completed</span>
+                    {% else %}
+                        <span class="pending">Pending</span>
+                    {% endif %}
+                </p>
 
-            {% if task.status == "Pending" %}
+                {% if task.status == "Pending" %}
+
                 <form action="/complete-task/{{ task.id }}" method="POST">
-                    <button type="submit">Mark Completed</button>
+                    <button type="submit" class="complete-button">
+                        Mark Completed
+                    </button>
                 </form>
-            {% endif %}
 
-        </div>
+                {% endif %}
 
-        <hr>
+            </div>
 
-    {% endfor %}
+            {% endfor %}
+
+        </section>
+
+    </div>
 
 </body>
 </html>
