@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 
 app = Flask(__name__)
@@ -92,6 +91,30 @@ def api_tasks():
     return jsonify({
         "total_tasks": len(tasks),
         "tasks": tasks
+    })
+
+
+@app.route("/statistics")
+def statistics():
+    total_tasks = len(tasks)
+
+    completed_tasks = sum(
+        1 for task in tasks if task["status"] == "Completed"
+    )
+
+    pending_tasks = sum(
+        1 for task in tasks if task["status"] == "Pending"
+    )
+
+    high_priority_tasks = sum(
+        1 for task in tasks if task["priority"] == "High"
+    )
+
+    return jsonify({
+        "total_tasks": total_tasks,
+        "completed_tasks": completed_tasks,
+        "pending_tasks": pending_tasks,
+        "high_priority_tasks": high_priority_tasks
     })
 
 

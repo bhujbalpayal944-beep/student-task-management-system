@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,6 +18,44 @@
             <h1>Student Task Management System</h1>
             <p>Manage your academic tasks, deadlines and priorities.</p>
         </header>
+
+
+        <!-- Task Statistics -->
+        <section class="statistics-section">
+
+            <h2>Task Statistics</h2>
+
+            <div class="statistics-container">
+
+                <div class="stat-card">
+                    <h3>Total Tasks</h3>
+                    <p>{{ tasks|length }}</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Pending Tasks</h3>
+                    <p>
+                        {{ tasks|selectattr("status", "equalto", "Pending")|list|length }}
+                    </p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Completed Tasks</h3>
+                    <p>
+                        {{ tasks|selectattr("status", "equalto", "Completed")|list|length }}
+                    </p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>High Priority</h3>
+                    <p>
+                        {{ tasks|selectattr("priority", "equalto", "High")|list|length }}
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
 
 
         <!-- Add Task Form -->
@@ -198,4 +235,3 @@
 </body>
 
 </html>
-```

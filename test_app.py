@@ -1,4 +1,3 @@
-
 from app import app, tasks
 
 
@@ -73,3 +72,19 @@ def test_complete_task():
 
     tasks.pop()
 
+
+def test_statistics():
+    client = app.test_client()
+
+    response = client.get("/statistics")
+
+    assert response.status_code == 200
+
+    data = response.get_json()
+
+    assert "total_tasks" in data
+    assert "completed_tasks" in data
+    assert "pending_tasks" in data
+    assert "high_priority_tasks" in data
+
+    assert data["total_tasks"] == len(tasks)

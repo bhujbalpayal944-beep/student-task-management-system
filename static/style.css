@@ -118,3 +118,39 @@ button {
 .delete-button {
     margin-top: 5px;
 }
+/* Task Statistics */
+
+.statistics-section {
+    background: white;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+}
+
+.statistics-section h2 {
+    margin-top: 0;
+}
+
+.statistics-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.stat-card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.stat-card h3 {
+    margin-top: 0;
+    font-size: 16px;
+}
+
+.stat-card p {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 0;
+}
