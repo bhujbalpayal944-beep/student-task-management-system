@@ -17,7 +17,46 @@ tasks = [
 
 @app.route("/")
 def home():
-    return render_template("index.html", tasks=tasks)
+    filter_status = request.args.get("status", "All")
+
+    if filter_status == "Pending":
+        filtered_tasks = [
+            task for task in tasks if task["status"] == "Pending"
+        ]
+    elif filter_status == "Completed":
+        filtered_tasks = [
+            task for task in tasks if task["status"] == "Completed"
+        ]
+    elif filter_status == "High":
+        filtered_tasks = [
+            task for task in tasks if task["priority"] == "High"
+        ]
+    else:
+        filtered_tasks = tasks
+
+    total_tasks = len(tasks)
+
+    completed_tasks = sum(
+        1 for task in tasks if task["status"] == "Completed"
+    )
+
+    pending_tasks = sum(
+        1 for task in tasks if task["status"] == "Pending"
+    )
+
+    high_priority_tasks = sum(
+        1 for task in tasks if task["priority"] == "High"
+    )
+
+    return render_template(
+        "index.html",
+        tasks=filtered_tasks,
+        current_filter=filter_status,
+        total_tasks=total_tasks,
+        completed_tasks=completed_tasks,
+        pending_tasks=pending_tasks,
+        high_priority_tasks=high_priority_tasks
+    )
 
 
 @app.route("/add-task", methods=["POST"])

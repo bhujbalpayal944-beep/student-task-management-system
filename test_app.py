@@ -1,3 +1,4 @@
+
 from app import app, tasks
 
 
@@ -88,3 +89,25 @@ def test_statistics():
     assert "high_priority_tasks" in data
 
     assert data["total_tasks"] == len(tasks)
+
+
+def test_task_filter():
+    client = app.test_client()
+
+    tasks.append(
+        {
+            "id": 1000,
+            "task": "Filter Pending Test",
+            "subject": "Testing",
+            "deadline": "2026-10-10",
+            "priority": "High",
+            "status": "Pending"
+        }
+    )
+
+    response = client.get("/?status=Pending")
+
+    assert response.status_code == 200
+    assert b"Filter Pending Test" in response.data
+
+    tasks.pop()

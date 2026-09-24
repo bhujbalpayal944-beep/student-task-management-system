@@ -29,28 +29,22 @@
 
                 <div class="stat-card">
                     <h3>Total Tasks</h3>
-                    <p>{{ tasks|length }}</p>
+                    <p>{{ total_tasks }}</p>
                 </div>
 
                 <div class="stat-card">
                     <h3>Pending Tasks</h3>
-                    <p>
-                        {{ tasks|selectattr("status", "equalto", "Pending")|list|length }}
-                    </p>
+                    <p>{{ pending_tasks }}</p>
                 </div>
 
                 <div class="stat-card">
                     <h3>Completed Tasks</h3>
-                    <p>
-                        {{ tasks|selectattr("status", "equalto", "Completed")|list|length }}
-                    </p>
+                    <p>{{ completed_tasks }}</p>
                 </div>
 
                 <div class="stat-card">
                     <h3>High Priority</h3>
-                    <p>
-                        {{ tasks|selectattr("priority", "equalto", "High")|list|length }}
-                    </p>
+                    <p>{{ high_priority_tasks }}</p>
                 </div>
 
             </div>
@@ -127,106 +121,166 @@
         </section>
 
 
+        <!-- Task Filter -->
+        <section class="filter-section">
+
+            <h2>Filter Tasks</h2>
+
+            <form action="/" method="GET">
+
+                <label for="status">Show Tasks</label>
+
+                <select
+                    id="status"
+                    name="status"
+                    onchange="this.form.submit()"
+                >
+
+                    <option
+                        value="All"
+                        {% if current_filter == "All" %}selected{% endif %}
+                    >
+                        All Tasks
+                    </option>
+
+                    <option
+                        value="Pending"
+                        {% if current_filter == "Pending" %}selected{% endif %}
+                    >
+                        Pending Tasks
+                    </option>
+
+                    <option
+                        value="Completed"
+                        {% if current_filter == "Completed" %}selected{% endif %}
+                    >
+                        Completed Tasks
+                    </option>
+
+                    <option
+                        value="High"
+                        {% if current_filter == "High" %}selected{% endif %}
+                    >
+                        High Priority Tasks
+                    </option>
+
+                </select>
+
+            </form>
+
+        </section>
+
+
         <!-- Tasks Section -->
         <section class="tasks-section">
 
             <h2>Your Tasks</h2>
 
 
-            {% for task in tasks %}
+            {% if tasks %}
 
-            <div class="task-card">
+                {% for task in tasks %}
 
-
-                <!-- Task Header -->
-                <div class="task-header">
-
-                    <h3>
-                        {{ task.task }}
-                    </h3>
-
-                    <span class="priority {{ task.priority|lower }}">
-                        {{ task.priority }}
-                    </span>
-
-                </div>
+                <div class="task-card">
 
 
-                <!-- Subject -->
-                <p>
-                    <strong>Subject:</strong>
-                    {{ task.subject }}
-                </p>
+                    <!-- Task Header -->
+                    <div class="task-header">
 
+                        <h3>
+                            {{ task.task }}
+                        </h3>
 
-                <!-- Deadline -->
-                <p>
-                    <strong>Deadline:</strong>
-                    {{ task.deadline }}
-                </p>
-
-
-                <!-- Status -->
-                <p>
-
-                    <strong>Status:</strong>
-
-                    {% if task.status == "Completed" %}
-
-                        <span class="completed">
-                            Completed
+                        <span class="priority {{ task.priority|lower }}">
+                            {{ task.priority }}
                         </span>
 
-                    {% else %}
+                    </div>
 
-                        <span class="pending">
-                            Pending
-                        </span>
+
+                    <!-- Subject -->
+                    <p>
+                        <strong>Subject:</strong>
+                        {{ task.subject }}
+                    </p>
+
+
+                    <!-- Deadline -->
+                    <p>
+                        <strong>Deadline:</strong>
+                        {{ task.deadline }}
+                    </p>
+
+
+                    <!-- Status -->
+                    <p>
+
+                        <strong>Status:</strong>
+
+                        {% if task.status == "Completed" %}
+
+                            <span class="completed">
+                                Completed
+                            </span>
+
+                        {% else %}
+
+                            <span class="pending">
+                                Pending
+                            </span>
+
+                        {% endif %}
+
+                    </p>
+
+
+                    <!-- Mark Completed Button -->
+                    {% if task.status == "Pending" %}
+
+                    <form
+                        action="/complete-task/{{ task.id }}"
+                        method="POST"
+                    >
+
+                        <button
+                            type="submit"
+                            class="complete-button"
+                        >
+                            Mark Completed
+                        </button>
+
+                    </form>
 
                     {% endif %}
 
+
+                    <!-- Delete Button -->
+                    <form
+                        action="/delete-task/{{ task.id }}"
+                        method="POST"
+                    >
+
+                        <button
+                            type="submit"
+                            class="delete-button"
+                        >
+                            Delete Task
+                        </button>
+
+                    </form>
+
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p class="no-tasks">
+                    No tasks found for this filter.
                 </p>
 
-
-                <!-- Mark Completed Button -->
-                {% if task.status == "Pending" %}
-
-                <form
-                    action="/complete-task/{{ task.id }}"
-                    method="POST"
-                >
-
-                    <button
-                        type="submit"
-                        class="complete-button"
-                    >
-                        Mark Completed
-                    </button>
-
-                </form>
-
-                {% endif %}
-
-
-                <!-- Delete Button -->
-                <form
-                    action="/delete-task/{{ task.id }}"
-                    method="POST"
-                >
-
-                    <button
-                        type="submit"
-                        class="delete-button"
-                    >
-                        Delete Task
-                    </button>
-
-                </form>
-
-
-            </div>
-
-            {% endfor %}
+            {% endif %}
 
         </section>
 
