@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 
 app = Flask(__name__)
@@ -22,13 +23,35 @@ def home():
 
 @app.route("/add-task", methods=["POST"])
 def add_task():
-    task_name = request.form.get("task")
-    subject = request.form.get("subject")
-    deadline = request.form.get("deadline")
-    priority = request.form.get("priority")
+    task_name = request.form.get("task", "")
+    subject = request.form.get("subject", "")
+    deadline = request.form.get("deadline", "")
+    priority = request.form.get("priority", "")
 
-    if not task_name or not subject or not deadline or not priority:
-        return "All fields are required.", 400
+    # Remove extra spaces from task name and subject
+    task_name = task_name.strip()
+    subject = subject.strip()
+    deadline = deadline.strip()
+    priority = priority.strip()
+
+    # Check whether required fields are empty
+    if not task_name:
+        return "Task name cannot be empty or contain only spaces.", 400
+
+    if not subject:
+        return "Subject cannot be empty or contain only spaces.", 400
+
+    if not deadline:
+        return "Deadline is required.", 400
+
+    if not priority:
+        return "Priority is required.", 400
+
+    # Check whether priority is valid
+    valid_priorities = ["High", "Medium", "Low"]
+
+    if priority not in valid_priorities:
+        return "Invalid priority.", 400
 
     new_task = {
         "id": len(tasks) + 1,
