@@ -233,7 +233,7 @@
             <form action="/" method="GET">
 
                 <label for="sort">
-                    Sort by Deadline
+                    Sort Tasks
                 </label>
 
                 <select
@@ -261,6 +261,13 @@
                         {% if sort_order == "latest" %}selected{% endif %}
                     >
                         Latest Deadline First
+                    </option>
+
+                    <option
+                        value="high_priority"
+                        {% if sort_order == "high_priority" %}selected{% endif %}
+                    >
+                        High Priority First
                     </option>
 
                 </select>

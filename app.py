@@ -53,6 +53,18 @@ def home():
             reverse=True
         )
 
+    # Sort tasks by priority
+    if sort_order == "high_priority":
+        priority_order = {
+            "High": 1,
+            "Medium": 2,
+            "Low": 3
+        }
+
+        filtered_tasks.sort(
+            key=lambda task: priority_order[task["priority"]]
+        )
+
     total_tasks = len(tasks)
 
     completed_tasks = sum(

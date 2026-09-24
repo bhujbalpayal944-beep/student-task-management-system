@@ -175,3 +175,63 @@ def test_task_sorting():
 
     tasks.pop()
     tasks.pop()
+
+
+def test_priority_sorting():
+    client = app.test_client()
+
+    tasks.append(
+        {
+            "id": 1004,
+            "task": "Low Priority Test",
+            "subject": "Testing",
+            "deadline": "2026-10-25",
+            "priority": "Low",
+            "status": "Pending"
+        }
+    )
+
+    tasks.append(
+        {
+            "id": 1005,
+            "task": "High Priority Test",
+            "subject": "Testing",
+            "deadline": "2026-10-26",
+            "priority": "High",
+            "status": "Pending"
+        }
+    )
+
+    tasks.append(
+        {
+            "id": 1006,
+            "task": "Medium Priority Test",
+            "subject": "Testing",
+            "deadline": "2026-10-27",
+            "priority": "Medium",
+            "status": "Pending"
+        }
+    )
+
+    response = client.get("/?sort=high_priority")
+
+    assert response.status_code == 200
+
+    high_position = response.data.find(
+        b"High Priority Test"
+    )
+
+    medium_position = response.data.find(
+        b"Medium Priority Test"
+    )
+
+    low_position = response.data.find(
+        b"Low Priority Test"
+    )
+
+    assert high_position < medium_position
+    assert medium_position < low_position
+
+    tasks.pop()
+    tasks.pop()
+    tasks.pop()
