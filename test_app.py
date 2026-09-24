@@ -1,4 +1,3 @@
-
 from app import app, tasks
 
 
@@ -111,3 +110,26 @@ def test_task_filter():
     assert b"Filter Pending Test" in response.data
 
     tasks.pop()
+
+
+def test_task_search():
+    client = app.test_client()
+
+    tasks.append(
+        {
+            "id": 1001,
+            "task": "Search Database Assignment",
+            "subject": "DBMS",
+            "deadline": "2026-10-15",
+            "priority": "Medium",
+            "status": "Pending"
+        }
+    )
+
+    response = client.get("/?search=Database")
+
+    assert response.status_code == 200
+    assert b"Search Database Assignment" in response.data
+
+    tasks.pop()
+    

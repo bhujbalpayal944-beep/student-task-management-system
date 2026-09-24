@@ -18,6 +18,7 @@ tasks = [
 @app.route("/")
 def home():
     filter_status = request.args.get("status", "All")
+    search_query = request.args.get("search", "").strip().lower()
 
     if filter_status == "Pending":
         filtered_tasks = [
@@ -33,6 +34,14 @@ def home():
         ]
     else:
         filtered_tasks = tasks
+
+    # Search tasks by task name or subject
+    if search_query:
+        filtered_tasks = [
+            task for task in filtered_tasks
+            if search_query in task["task"].lower()
+            or search_query in task["subject"].lower()
+        ]
 
     total_tasks = len(tasks)
 
@@ -52,6 +61,7 @@ def home():
         "index.html",
         tasks=filtered_tasks,
         current_filter=filter_status,
+        search_query=search_query,
         total_tasks=total_tasks,
         completed_tasks=completed_tasks,
         pending_tasks=pending_tasks,

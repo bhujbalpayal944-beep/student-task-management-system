@@ -176,3 +176,19 @@ button {
     font-weight: bold;
     padding: 20px;
 }
+/* Task Search */
+
+.search-section {
+    background: white;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+}
+
+.search-section h2 {
+    margin-top: 0;
+}
+
+.search-section button {
+    width: 100%;
+}

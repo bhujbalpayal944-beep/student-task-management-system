@@ -121,6 +121,38 @@
         </section>
 
 
+        <!-- Search Tasks -->
+        <section class="search-section">
+
+            <h2>Search Tasks</h2>
+
+            <form action="/" method="GET">
+
+                <label for="search">Search by Task Name or Subject</label>
+
+                <input
+                    type="text"
+                    id="search"
+                    name="search"
+                    placeholder="Enter task name or subject"
+                    value="{{ search_query }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="status"
+                    value="{{ current_filter }}"
+                >
+
+                <button type="submit">
+                    Search
+                </button>
+
+            </form>
+
+        </section>
+
+
         <!-- Task Filter -->
         <section class="filter-section">
 
@@ -165,6 +197,12 @@
                     </option>
 
                 </select>
+
+                <input
+                    type="hidden"
+                    name="search"
+                    value="{{ search_query }}"
+                >
 
             </form>
 
@@ -277,7 +315,7 @@
             {% else %}
 
                 <p class="no-tasks">
-                    No tasks found for this filter.
+                    No tasks found for this search/filter.
                 </p>
 
             {% endif %}
