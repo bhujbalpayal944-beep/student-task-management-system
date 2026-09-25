@@ -243,4 +243,4 @@ def test_commit_footer():
     response = client.get("/")
 
     assert response.status_code == 200
-    assert b"Running commit: WRONG" in response.data
+    assert b"Running commit: local" in response.data
